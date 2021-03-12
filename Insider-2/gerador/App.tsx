@@ -1,25 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
 import Slider from '@react-native-community/slider';
+import Clipboard from 'expo-clipboard';
 
 import image from "./src/assets/images/logo.png";
+import Popover from './src/components/Popover/Modal';
+
+let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 export default function App() {
-  const [pass, setPass] = useState(null);
+  const [pass, setPass] = useState('');
+  const [passSize, setPassSize] = useState(8);
+  const [popoverVisible, setPopoverVisible] = useState(false);
   
   function generatePass() {
-    
+    let newPass = new Array(passSize).fill('').map(() => String.fromCharCode(Math.random()*86+33)).join("")
+
+    setPass(newPass);
   }
   
+  function copyToClipboard() {
+    Clipboard.setString(pass);
+    setPopoverVisible(true);
+  }
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
 
       <Image source={image} style={styles.logo}/>
 
       <Text style={styles.title}>
-        12 Caracteres
+        {passSize} Caracteres
       </Text>
 
       <View style={styles.area}>
@@ -29,6 +42,9 @@ export default function App() {
           maximumValue={15}
           minimumTrackTintColor="#F00"
           maximumTrackTintColor="#000"
+          value={passSize}
+          onValueChange={ value => setPassSize(Number(value.toFixed(0)))}
+          thumbTintColor="#000"
         />
       </View>
 
@@ -39,10 +55,18 @@ export default function App() {
         <Text style={styles.buttonText}>Gerar Senha</Text>
       </TouchableOpacity>
 
-      <View style={styles.area}>
-        <Text style={styles.password}>123412341234</Text>
-      </View>
-    </View>
+      {!!pass &&
+        <TouchableWithoutFeedback
+          onPress={copyToClipboard}
+        >
+          <View style={styles.area}>
+            <Text style={styles.password}>{pass}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      }
+
+      <Popover visible={popoverVisible} setVisible={setPopoverVisible} hideTime={2500}/>
+    </SafeAreaView>
   );
 }
 
@@ -93,5 +117,11 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlign: 'center',
     fontSize: 16
+  },
+
+  passwordArea: {
+    backgroundColor: '#f00',
+    height: 50,
+
   }
 });
