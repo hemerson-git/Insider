@@ -1,28 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+interface weatherProps {
+  weather: {
+    windSpeed: string,
+    sunrise: string,
+    sunset: string,
+    humidity: number
+  }
+}
 
-function Conditions() {
+function Conditions({ weather } : weatherProps) {
   return (
     <View style={styles.conditionsContainer}>
       <View style={styles.conditionItem}>
         <Feather name='wind' size={23} color="#1ED6FF"/>
-        <Text>7KM/h</Text>
+        <Text>{weather.windSpeed}</Text>
       </View>
 
       <View style={styles.conditionItem}>
         <MaterialCommunityIcons name='weather-sunset-up' size={23} color="#1ED6FF"/>
-        <Text>5:22 am</Text>
+        <Text>{weather.sunrise}</Text>
       </View>
 
       <View style={styles.conditionItem}>
         <MaterialCommunityIcons name='weather-sunset-down' size={23} color="#1ED6FF"/>
-        <Text>6:00 pm</Text>
+        <Text>{weather.sunset}</Text>
       </View>
 
       <View style={styles.conditionItem}>
         <Feather name='droplet' size={23} color="#1ED6FF"/>
-        <Text>65</Text>
+        <Text>{weather.humidity}</Text>
       </View>
     </View>
   )

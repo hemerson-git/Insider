@@ -29,12 +29,14 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
   const [city, setCity] = useState("São Paulo");
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [temp, setTemp] = useState(20);
+  const [weather, setWeather] = useState({ windSpeed: '0 km/h', sunrise: '5:30', sunset: '6:00', humidity: 0 })
     
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
       
       if (status !== 'granted') {
+        alert('Permissão foi negada');
         setLoading(false);
         return;
       }
@@ -44,8 +46,7 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
       
       let {data} = await hgAPI.get(`weather?key=${apiKey}&lat=${latitude}&lon=${longitude}&user_ip=remote`);
       let { forecast, currently, condition_slug, city_name, date, temp, description } = data.results;
-
-      console.log(data.results)
+      let { wind_speedy, sunrise, sunset, humidity } = data.results;
       
       setCurrently(currently)
       setForecasts(forecast);
@@ -54,12 +55,10 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
       setDate(date);
       setTemp(temp);
       setConditionTitle(description);
+      setWeather({ windSpeed : wind_speedy, sunrise, sunset, humidity });
+      setLoading(false)
     })();
   }, []);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [forecasts]);
   
   function toggleMenu () {
     navigation.toggleDrawer();
@@ -86,7 +85,8 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
         date={date} 
         temp={temp}
       />
-      <Conditions/>
+
+      <Conditions weather={weather}/>
 
       <FlatList 
         data={forecasts}
