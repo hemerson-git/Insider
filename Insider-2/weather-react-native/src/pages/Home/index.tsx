@@ -23,7 +23,12 @@ interface forecastParams {
 function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
   const [loading, setLoading] = useState(true);
   const [forecasts, setForecasts] = useState<forecastParams[]>([]);
-  const [currently, setCurrently] = useState("");
+  const [currently, setCurrently] = useState("dia");
+  const [condition, setCondition] = useState("clear_day");
+  const [conditionTitle, setConditionTitle] = useState("Dia Limpo");
+  const [city, setCity] = useState("São Paulo");
+  const [date, setDate] = useState(new Date().toLocaleDateString());
+  const [temp, setTemp] = useState(20);
     
   useEffect(() => {
     (async () => {
@@ -38,9 +43,17 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
       let { latitude, longitude } = location.coords;
       
       let {data} = await hgAPI.get(`weather?key=${apiKey}&lat=${latitude}&lon=${longitude}&user_ip=remote`);
-      let { forecast } = data.results;
+      let { forecast, currently, condition_slug, city_name, date, temp, description } = data.results;
 
+      console.log(data.results)
+      
+      setCurrently(currently)
       setForecasts(forecast);
+      setCondition(condition_slug);
+      setCity(city_name);
+      setDate(date);
+      setTemp(temp);
+      setConditionTitle(description);
     })();
   }, []);
 
@@ -66,7 +79,13 @@ function Home({ navigation } : DrawerScreenProps<{Profile: any}>) {
   return (
     <SafeAreaView style={styles.container}>
       <Menu handlePress={toggleMenu}/>
-      <Header/>
+      <Header 
+        currently={currently} 
+        condition={{condition, conditionTitle}} 
+        city={city} 
+        date={date} 
+        temp={temp}
+      />
       <Conditions/>
 
       <FlatList 

@@ -28,6 +28,12 @@ export function condition (condition : string) {
         color: '#1EC9FF'
       }
 
+    case 'storm':
+      return icon ={
+        materialIconName: "thunderstorm-outline",
+        color: '#1EC9FF'
+      }
+
     default:
       return icon ={
         materialIconName: "cloud-outline",
