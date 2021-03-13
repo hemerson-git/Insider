@@ -1,43 +1,56 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BaseButton } from 'react-native-gesture-handler';
+interface menuParams {
+  handlePress: () => void,
+}
 
-function Menu() {
-  function toggleMenu() {
-    alert('Menu')
-  }
+function Menu({ handlePress } : menuParams) {
+  const toggleMenu = handlePress;
   
   return (
-    <TouchableOpacity 
+    <BaseButton 
       style={styles.container}
-      onPress={toggleMenu}
+      onPress={() => toggleMenu()}
+      rippleColor="transparent"
     >
       <Feather 
         name="menu" 
         size={36}
         color="#373737"
+        style={styles.buttonIcon}
       />
-    </TouchableOpacity>
+    </BaseButton>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
-    left: 10,
+    top: 40,
+    left: 15,
     zIndex: 100,
     height: 70,
     width: 70,
-    backgroundColor: '#FFF',
-    borderTopRightRadius: 30,
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    transform: [{ scale: 1.000001 }],
+  },
 
-    alignItems: 'center',
-    justifyContent: 'center'
+  buttonIcon: {
+    backgroundColor: '#FFF',
+    height: '100%',
+    width: '100%',
+    borderRadius: 30,
+    borderTopLeftRadius: 0,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 1,
+      height: 3
+    },
   }
 })
 

@@ -1,0 +1,49 @@
+import React from 'react';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+
+function Conditions() {
+  return (
+    <View style={styles.conditionsContainer}>
+      <View style={styles.conditionItem}>
+        <Feather name='wind' size={23} color="#1ED6FF"/>
+        <Text>7KM/h</Text>
+      </View>
+
+      <View style={styles.conditionItem}>
+        <MaterialCommunityIcons name='weather-sunset-up' size={23} color="#1ED6FF"/>
+        <Text>5:22 am</Text>
+      </View>
+
+      <View style={styles.conditionItem}>
+        <MaterialCommunityIcons name='weather-sunset-down' size={23} color="#1ED6FF"/>
+        <Text>6:00 pm</Text>
+      </View>
+
+      <View style={styles.conditionItem}>
+        <Feather name='droplet' size={23} color="#1ED6FF"/>
+        <Text>65</Text>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  conditionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: '#FFF',
+    width: Dimensions.get('screen').width * .95,
+    borderRadius: 8
+  },
+
+  conditionItem: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})
+
+export default Conditions;

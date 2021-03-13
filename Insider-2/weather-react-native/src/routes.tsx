@@ -8,7 +8,7 @@ const Drawer = createDrawerNavigator();
 
 function Routes() {
   return (
-    <Drawer.Navigator initialRouteName="Search">
+    <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen 
         name="Home" 
         component={Home} 
