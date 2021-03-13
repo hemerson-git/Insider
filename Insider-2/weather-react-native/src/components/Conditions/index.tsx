@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     padding: 10,
     backgroundColor: '#FFF',
-    width: Dimensions.get('screen').width * .95,
+    width: "95%",
     borderRadius: 8
   },
 

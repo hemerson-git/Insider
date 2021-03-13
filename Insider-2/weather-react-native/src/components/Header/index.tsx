@@ -37,7 +37,7 @@ function Header({ currently, condition, city, date, temp } : headerParams) {
         setIconColor('#FFF')
         break;
       case 'storm':
-        setMaterialIconName({ iconName: 'rainy' });
+        setMaterialIconName({ iconName: 'thunderstorm' });
         setIconColor('#FFF')
     }
   }, [currently])
