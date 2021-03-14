@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 interface weatherProps {
   weather: {
     windSpeed: string,

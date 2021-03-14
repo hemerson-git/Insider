@@ -1,7 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
 interface headerParams {
   currently: string,
   condition: {
@@ -26,7 +27,7 @@ function Header({ currently, condition, city, date, temp } : headerParams) {
     if(currently === 'noite') {
       setBackground(['#0C3741', '#0F2F61']);
     }
-
+    
     switch (condition.condition) {
       case 'clear_day':
         setMaterialIconName({ iconName: 'partly-sunny' });
@@ -34,6 +35,10 @@ function Header({ currently, condition, city, date, temp } : headerParams) {
         break;
       case 'rain':
         setMaterialIconName({ iconName: 'rainy' });
+        setIconColor('#FFF')
+        break;
+      case 'clear_night':
+        setMaterialIconName({ iconName: 'moon' });
         setIconColor('#FFF')
         break;
       case 'storm':
