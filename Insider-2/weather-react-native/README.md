@@ -13,7 +13,7 @@ It was developed during the 2nd React Native Insider, given by [Sujeito Programa
 <img src="https://i.ibb.co/vVxmyN2/node.png" width="20"/> <b>Node Js</b>
 
 ## 🎨 Layout Preview
-<img src='/weather-react-native/.github/animation.gif'/>
+<img src='./.github/animation.gif' height="500px"/>
 
 ## 👨‍💻 Running
 
