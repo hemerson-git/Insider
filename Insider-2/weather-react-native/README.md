@@ -1,7 +1,6 @@
 ## 🎉 About
 
-**Weather RN** 
-WeatherRN is an application for consulting weather forecasts.
+**Weather RN** is an application for consulting weather forecasts.
 It was developed during the 2nd React Native Insider, given by [Sujeito Programador](https://instagram.com/sujeitoprogramador), using the technologies: React-Native and Consuming [HGBrasil API](https://hgbrasil.com).
 
 <hr />
@@ -13,7 +12,7 @@ It was developed during the 2nd React Native Insider, given by [Sujeito Programa
 <img src="https://i.ibb.co/vVxmyN2/node.png" width="20"/> <b>Node Js</b>
 
 ## 🎨 Layout Preview
-<img src='/weather-react-native/.github/animation.gif'/>
+<img src='./.github/animation.gif' height="500px"/>
 
 ## 👨‍💻 Running
 
