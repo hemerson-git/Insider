@@ -1,11 +1,21 @@
+import "react-native-gesture-handler";
 import React from "react";
-import { View, Text } from "react-native";
+import { StatusBar } from "react-native";
+
+import { NavigationContainer } from "@react-navigation/native";
+
+import Routes from "./src/routes";
+import ThemeProvider from "./src/contexts/ThemeContext";
 
 function App() {
   return (
-    <View>
-      <Text>Hello, World</Text>
-    </View>
+    <NavigationContainer>
+      <StatusBar hidden />
+
+      <ThemeProvider>
+        <Routes />
+      </ThemeProvider>
+    </NavigationContainer>
   );
 }
 
