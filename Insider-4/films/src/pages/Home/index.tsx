@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 // Components
 import Header from "../../components/Header";
 
-// Styles
+// Styleds
 import {
   Container,
   SearchContainer,
@@ -18,7 +18,98 @@ import {
 } from "./styles";
 import SliderItem from "../../components/SliderItem";
 
+// Services
+import TMDB_API, { TMDB_KEY } from "../../services/tmdbApi";
+import Load from "../../components/Load";
+import { getMovieList } from "../../utils/movies";
+
+// Types
+
+type MovieProps = {
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+};
+
 function Home() {
+  const [nowPlayingMovies, setNowPlayingMovies] = useState([] as MovieProps[]);
+  const [pupularMovies, setPopularMovies] = useState([] as MovieProps[]);
+  const [topRatedMovies, setTopRatedMovies] = useState([] as MovieProps[]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    async function getMovies() {
+      setIsLoading(true);
+
+      const [nowPlaying, popular, topRated] = await Promise.all([
+        TMDB_API.get(`movie/now_playing`, {
+          params: {
+            api_key: TMDB_KEY,
+            language: "pt-BR",
+            page: 1,
+          },
+        }),
+
+        TMDB_API.get(`movie/popular`, {
+          params: {
+            api_key: TMDB_KEY,
+            language: "pt-BR",
+            page: 1,
+          },
+        }),
+
+        TMDB_API.get(`movie/top_rated`, {
+          params: {
+            api_key: TMDB_KEY,
+            language: "pt-BR",
+            page: 1,
+          },
+        }),
+      ]);
+
+      //@ts-ignore
+      const nowList = getMovieList(10, nowPlaying.data.results);
+      //@ts-ignore
+      const popularList = getMovieList(5, popular.data.results);
+      //@ts-ignore
+      const topList = getMovieList(5, topRated.data.results);
+
+      if (nowList) {
+        //@ts-ignore
+        setNowPlayingMovies(nowList);
+      }
+
+      if (popularList) {
+        //@ts-ignore
+        setPopularMovies(popularList);
+      }
+
+      if (topList) {
+        //@ts-ignore
+        setTopRatedMovies(topList);
+      }
+
+      setIsLoading(false);
+    }
+
+    getMovies();
+  }, []);
+
+  if (isLoading) {
+    return <Load />;
+  }
+
   return (
     <Container>
       <Header title="React Prime" />
@@ -45,30 +136,33 @@ function Home() {
 
         <SliderMovies
           horizontal
-          data={[1, 2, 3, 4]}
-          renderItem={({ item }) => <SliderItem />}
+          data={nowPlayingMovies}
+          renderItem={({ item }) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => String(item.id)}
         />
 
         <Title>Populares</Title>
 
         <SliderMovies
           horizontal
-          data={[1, 2, 3, 4]}
-          renderItem={({ item }) => <SliderItem />}
+          data={pupularMovies}
+          renderItem={({ item }) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => String(item.id)}
         />
 
         <Title>Mais Votados</Title>
 
         <SliderMovies
           horizontal
-          data={[1, 2, 3, 4]}
-          renderItem={({ item }) => <SliderItem />}
+          data={topRatedMovies}
+          renderItem={({ item }) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => String(item.id)}
         />
       </ScrollView>
     </Container>
