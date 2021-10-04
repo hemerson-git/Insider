@@ -15,7 +15,11 @@ type MovieProps = {
   vote_count: number;
 };
 
-export function getMovieList(size: number, movies: MovieProps[]) {
+export function getMovieList(
+  size: number,
+  movies: MovieProps[],
+  exclude?: number
+) {
   let movieList = [];
 
   for (let i = 0; i < size; i++) {
@@ -23,4 +27,10 @@ export function getMovieList(size: number, movies: MovieProps[]) {
   }
 
   return movieList;
+}
+
+export function getRandomNumber(limit: MovieProps[]) {
+  const randomNumber = Math.floor(Math.random() * limit.length);
+
+  return randomNumber;
 }

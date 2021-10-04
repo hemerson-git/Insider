@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //Pages
 import Home from "../pages/Home";
+import MovieDetails from "../pages/MovieDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,11 @@ function StackRoutes() {
       }}
     >
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Details"
+        component={MovieDetails}
+        options={{ title: "Detalhes" }}
+      />
     </Stack.Navigator>
   );
 }

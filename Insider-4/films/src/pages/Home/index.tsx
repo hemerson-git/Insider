@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/core";
 
 // Components
 import Header from "../../components/Header";
+import Load from "../../components/Load";
 
 // Styleds
 import {
@@ -20,8 +22,7 @@ import SliderItem from "../../components/SliderItem";
 
 // Services
 import TMDB_API, { TMDB_KEY } from "../../services/tmdbApi";
-import Load from "../../components/Load";
-import { getMovieList } from "../../utils/movies";
+import { getMovieList, getRandomNumber } from "../../utils/movies";
 
 // Types
 
@@ -42,13 +43,23 @@ type MovieProps = {
   vote_count: number;
 };
 
+type SliderProps = {
+  item: MovieProps;
+};
+
 function Home() {
   const [nowPlayingMovies, setNowPlayingMovies] = useState([] as MovieProps[]);
   const [pupularMovies, setPopularMovies] = useState([] as MovieProps[]);
   const [topRatedMovies, setTopRatedMovies] = useState([] as MovieProps[]);
+  const [bannerMovie, setBannerMovie] = useState({} as MovieProps);
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigation = useNavigation();
+
   useEffect(() => {
+    let isActive = true;
+    const abortController = new AbortController();
+
     async function getMovies() {
       setIsLoading(true);
 
@@ -78,33 +89,49 @@ function Home() {
         }),
       ]);
 
-      //@ts-ignore
-      const nowList = getMovieList(10, nowPlaying.data.results);
-      //@ts-ignore
-      const popularList = getMovieList(5, popular.data.results);
-      //@ts-ignore
-      const topList = getMovieList(5, topRated.data.results);
-
-      if (nowList) {
+      if (isActive) {
         //@ts-ignore
-        setNowPlayingMovies(nowList);
-      }
-
-      if (popularList) {
+        const nowList = getMovieList(10, nowPlaying.data.results);
         //@ts-ignore
-        setPopularMovies(popularList);
-      }
-
-      if (topList) {
+        const popularList = getMovieList(5, popular.data.results);
         //@ts-ignore
-        setTopRatedMovies(topList);
-      }
+        const topList = getMovieList(5, topRated.data.results);
 
-      setIsLoading(false);
+        if (nowList) {
+          setNowPlayingMovies(nowList);
+
+          const selectedMovieNumber = getRandomNumber(nowList);
+          const selectedMovie = nowList[selectedMovieNumber];
+          setBannerMovie(selectedMovie);
+        }
+
+        if (popularList) {
+          //@ts-ignore
+          setPopularMovies(popularList);
+        }
+
+        if (topList) {
+          //@ts-ignore
+          setTopRatedMovies(topList);
+        }
+
+        setIsLoading(false);
+      }
     }
 
     getMovies();
+
+    return () => {
+      isActive = false;
+      abortController.abort();
+    };
   }, []);
+
+  function handleNavigateToDetails(movie: MovieProps) {
+    navigation.navigate("Details", {
+      id: movie.id,
+    });
+  }
 
   if (isLoading) {
     return <Load />;
@@ -125,11 +152,14 @@ function Home() {
       <ScrollView>
         <Title>Em Cartaz</Title>
 
-        <BannerButton activeOpacity={0.9} onPress={() => alert("Clicked")}>
+        <BannerButton
+          activeOpacity={0.9}
+          onPress={() => handleNavigateToDetails(bannerMovie)}
+        >
           <Banner
             resizeMethod="resize"
             source={{
-              uri: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=725&q=80",
+              uri: `https://image.tmdb.org/t/p/original/${bannerMovie.poster_path}`,
             }}
           />
         </BannerButton>
@@ -137,7 +167,7 @@ function Home() {
         <SliderMovies
           horizontal
           data={nowPlayingMovies}
-          renderItem={({ item }) => <SliderItem movie={item} />}
+          renderItem={({ item }: SliderProps) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => String(item.id)}
@@ -148,7 +178,7 @@ function Home() {
         <SliderMovies
           horizontal
           data={pupularMovies}
-          renderItem={({ item }) => <SliderItem movie={item} />}
+          renderItem={({ item }: SliderProps) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => String(item.id)}
@@ -159,7 +189,7 @@ function Home() {
         <SliderMovies
           horizontal
           data={topRatedMovies}
-          renderItem={({ item }) => <SliderItem movie={item} />}
+          renderItem={({ item }: SliderProps) => <SliderItem movie={item} />}
           fadingEdgeLength={15}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => String(item.id)}

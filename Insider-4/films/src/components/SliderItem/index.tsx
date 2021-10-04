@@ -3,30 +3,42 @@ import { Ionicons } from "@expo/vector-icons";
 
 // Styled Components
 import { Container, BannerImage, RatingContainer, Title, Rate } from "./styles";
+import { useNavigation } from "@react-navigation/core";
 
 // Types
 type MovieProps = {
-  movie: {
-    adult: boolean;
-    backdrop_path: string;
-    genre_ids: number[];
-    id: number;
-    original_language: string;
-    original_title: string;
-    overview: string;
-    popularity: number;
-    poster_path: string;
-    release_date: string;
-    title: string;
-    video: boolean;
-    vote_average: number;
-    vote_count: number;
-  };
+  adult: boolean;
+  backdrop_path: string;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
 };
 
-function SliderItem({ movie }: MovieProps) {
+type SliderItemProps = {
+  movie: MovieProps;
+};
+
+function SliderItem({ movie }: SliderItemProps) {
+  const navigation = useNavigation();
+
+  function handleNavigateTo() {
+    //@ts-ignore
+    navigation.navigate("Details", {
+      id: movie.id,
+    });
+  }
+
   return (
-    <Container activeOpacity={0.8}>
+    <Container activeOpacity={0.8} onPress={handleNavigateTo}>
       <BannerImage
         source={{
           uri: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
