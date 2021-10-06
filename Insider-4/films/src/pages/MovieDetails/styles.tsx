@@ -67,6 +67,23 @@ export const ContentArea = styled.View`
 `;
 
 export const Rate = styled.Text`
-  font-size: 24px;
+  color: #fff;
+  font-size: 18px;
   font-weight: bold;
+`;
+
+export const ListGenres = styled.FlatList`
+  padding-left: 16px;
+  margin: 8px 0;
+  max-height: 36px;
+`;
+
+export const DescriptionContainer = styled.ScrollView``;
+
+export const Description = styled.Text`
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 32px;
+  color: #fff;
+  line-height: 20px;
 `;

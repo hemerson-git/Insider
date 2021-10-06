@@ -14,6 +14,10 @@ import {
   Banner,
   ButtonLink,
   ContentArea,
+  Rate,
+  ListGenres,
+  DescriptionContainer,
+  Description,
 } from "./styles";
 
 // Services
@@ -21,7 +25,7 @@ import TMDB_API, { TMDB_KEY } from "../../services/tmdbApi";
 
 // Components
 import Load from "../../components/Load";
-import { Rate } from "../../components/SliderItem/styles";
+import Genres from "../../components/Genres";
 
 type MovieProps = {
   adult: false;
@@ -180,6 +184,20 @@ function MovieDetails() {
 
         <Rate>{movie.vote_average}/10</Rate>
       </ContentArea>
+
+      <ListGenres
+        data={movie?.genres}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => <Genres title={item.name} />}
+      />
+
+      <DescriptionContainer showsVerticalScrollIndicator={false}>
+        <Title>Descrição</Title>
+
+        <Description>{movie.overview}</Description>
+      </DescriptionContainer>
     </Container>
   );
 }
