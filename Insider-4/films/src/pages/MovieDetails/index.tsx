@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Modal } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/core";
 
@@ -26,6 +27,7 @@ import TMDB_API, { TMDB_KEY } from "../../services/tmdbApi";
 // Components
 import Load from "../../components/Load";
 import Genres from "../../components/Genres";
+import ModalLink from "../../components/ModalLink";
 
 type MovieProps = {
   adult: false;
@@ -94,6 +96,7 @@ function MovieDetails() {
   const { id } = params as MovieDetailsParams;
   const [movie, setMovie] = useState({} as MovieProps);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -133,6 +136,10 @@ function MovieDetails() {
     navigation.goBack();
   }
 
+  function handleCloseModal() {
+    setIsModalOpen(false);
+  }
+
   if (isLoading) {
     return <Load />;
   }
@@ -162,7 +169,7 @@ function MovieDetails() {
         }}
       />
 
-      <ButtonLink activeOpacity={0.8}>
+      <ButtonLink activeOpacity={0.8} onPress={() => setIsModalOpen(true)}>
         <Feather name="link" size={24} color="#FFF" />
       </ButtonLink>
 
@@ -189,7 +196,9 @@ function MovieDetails() {
         data={movie?.genres}
         horizontal
         showsHorizontalScrollIndicator={false}
+        // @ts-ignore
         keyExtractor={(item) => String(item.id)}
+        // @ts-ignore
         renderItem={({ item }) => <Genres title={item.name} />}
       />
 
@@ -198,6 +207,14 @@ function MovieDetails() {
 
         <Description>{movie.overview}</Description>
       </DescriptionContainer>
+
+      <Modal animationType="slide" transparent visible={isModalOpen}>
+        <ModalLink
+          link={movie.homepage}
+          closeModal={handleCloseModal}
+          title={movie.title}
+        />
+      </Modal>
     </Container>
   );
 }
