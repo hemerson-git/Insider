@@ -189,7 +189,7 @@ function MovieDetails() {
           disabled
         />
 
-        <Rate>{movie.vote_average}/10</Rate>
+        <Rate>{movie.vote_average} / 10</Rate>
       </ContentArea>
 
       <ListGenres
@@ -205,7 +205,7 @@ function MovieDetails() {
       <DescriptionContainer showsVerticalScrollIndicator={false}>
         <Title>Descrição</Title>
 
-        <Description>{movie.overview}</Description>
+        <Description>{movie?.overview}</Description>
       </DescriptionContainer>
 
       <Modal animationType="slide" transparent visible={isModalOpen}>

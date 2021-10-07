@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
@@ -53,6 +55,7 @@ function Home() {
   const [topRatedMovies, setTopRatedMovies] = useState([] as MovieProps[]);
   const [bannerMovie, setBannerMovie] = useState({} as MovieProps);
   const [isLoading, setIsLoading] = useState(false);
+  const [input, setInput] = useState("");
 
   const navigation = useNavigation();
 
@@ -90,11 +93,8 @@ function Home() {
       ]);
 
       if (isActive) {
-        //@ts-ignore
         const nowList = getMovieList(10, nowPlaying.data.results);
-        //@ts-ignore
         const popularList = getMovieList(5, popular.data.results);
-        //@ts-ignore
         const topList = getMovieList(5, topRated.data.results);
 
         if (nowList) {
@@ -106,12 +106,10 @@ function Home() {
         }
 
         if (popularList) {
-          //@ts-ignore
           setPopularMovies(popularList);
         }
 
         if (topList) {
-          //@ts-ignore
           setTopRatedMovies(topList);
         }
 
@@ -133,6 +131,16 @@ function Home() {
     });
   }
 
+  function handleSearchMovie() {
+    if (input.trim() === "") return;
+
+    navigation.navigate("Search", {
+      query: input,
+    });
+
+    setInput("");
+  }
+
   if (isLoading) {
     return <Load />;
   }
@@ -142,9 +150,15 @@ function Home() {
       <Header title="React Prime" />
 
       <SearchContainer>
-        <SearchInput placeholder="Ex: Vingadores" placeholderTextColor="#BBB" />
+        <SearchInput
+          placeholder="Ex: Vingadores"
+          placeholderTextColor="#BBB"
+          value={input}
+          onChangeText={(text) => setInput(text)}
+          onEndEditing={handleSearchMovie}
+        />
 
-        <SearchButton>
+        <SearchButton onPress={handleSearchMovie}>
           <Feather name="search" size={32} color="#FFF" />
         </SearchButton>
       </SearchContainer>
