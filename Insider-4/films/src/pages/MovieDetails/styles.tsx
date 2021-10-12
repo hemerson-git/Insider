@@ -78,6 +78,25 @@ export const ListGenres = styled.FlatList`
   max-height: 36px;
 `;
 
+export const ReleaseStatusContainer = styled.View`
+  padding: 8px 16px;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ReleaseStatus = styled.Text`
+  color: white;
+  font-size: 16px;
+  background-color: green;
+  padding: 4px 8px;
+  border-radius: 4px;
+`;
+
+export const ReleaseDate = styled.Text`
+  color: white;
+`;
+
 export const DescriptionContainer = styled.ScrollView``;
 
 export const Description = styled.Text`

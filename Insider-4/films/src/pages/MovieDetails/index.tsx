@@ -19,6 +19,9 @@ import {
   ListGenres,
   DescriptionContainer,
   Description,
+  ReleaseStatusContainer,
+  ReleaseStatus,
+  ReleaseDate,
 } from "./styles";
 
 // Services
@@ -28,6 +31,7 @@ import TMDB_API, { TMDB_KEY } from "../../services/tmdbApi";
 import Load from "../../components/Load";
 import Genres from "../../components/Genres";
 import ModalLink from "../../components/ModalLink";
+import { getBrazilianDate } from "../../utils/date";
 
 type MovieProps = {
   adult: false;
@@ -202,11 +206,26 @@ function MovieDetails() {
         renderItem={({ item }) => <Genres title={item.name} />}
       />
 
-      <DescriptionContainer showsVerticalScrollIndicator={false}>
-        <Title>Descrição</Title>
+      {!!movie.release_date && (
+        <ReleaseStatusContainer>
+          <ReleaseStatus
+            style={{
+              backgroundColor: movie.status === "Released" ? "green" : "red",
+            }}
+          >
+            {movie.status === "Released" ? "Lançado" : "Não Lançado"}
+          </ReleaseStatus>
 
-        <Description>{movie?.overview}</Description>
-      </DescriptionContainer>
+          <ReleaseDate>{getBrazilianDate(movie.release_date)}</ReleaseDate>
+        </ReleaseStatusContainer>
+      )}
+
+      {!!movie.overview && (
+        <DescriptionContainer showsVerticalScrollIndicator={false}>
+          <Title>Descrição</Title>
+          <Description>{movie?.overview}</Description>
+        </DescriptionContainer>
+      )}
 
       <Modal animationType="slide" transparent visible={isModalOpen}>
         <ModalLink
