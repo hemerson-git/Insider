@@ -3,7 +3,6 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 import { Container, MenuButton, Title } from "./styles";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 type HeaderProps = {
   title: string;

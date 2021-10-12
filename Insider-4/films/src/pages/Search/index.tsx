@@ -103,8 +103,6 @@ function Search() {
       const { results } = response?.data as ResultsProps;
 
       if (isActive) {
-        const moviesWithDate = results.filter((movie) => !!movie.release_date);
-
         setMoviesResult(results);
         setIsLoading(false);
       }
@@ -126,7 +124,7 @@ function Search() {
       <ListMovies
         data={moviesResult}
         // @ts-ignore
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         // @ts-ignore
         renderItem={({ item: movie }: MovieProps) => (
           <SearchItem movie={movie} />
