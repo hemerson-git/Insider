@@ -105,8 +105,6 @@ function Search() {
       if (isActive) {
         const moviesWithDate = results.filter((movie) => !!movie.release_date);
 
-        console.log(moviesWithDate);
-
         setMoviesResult(results);
         setIsLoading(false);
       }

@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from "@react-navigation/core";
 
 // @ts-ignore
 import Stars from "react-native-stars";
+import { STORAGE_KEY } from "@env";
 
 // Styleds
 import {
@@ -32,6 +33,13 @@ import Load from "../../components/Load";
 import Genres from "../../components/Genres";
 import ModalLink from "../../components/ModalLink";
 import { getBrazilianDate } from "../../utils/date";
+
+// Utils
+import {
+  saveMovie,
+  hasMovieAlreadySaved,
+  removeMovie,
+} from "../../utils/storage";
 
 type MovieProps = {
   adult: false;
@@ -101,6 +109,7 @@ function MovieDetails() {
   const [movie, setMovie] = useState({} as MovieProps);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
 
   useEffect(() => {
     let isActive = true;
@@ -122,6 +131,8 @@ function MovieDetails() {
           });
 
         if (isActive && movie.id !== id) {
+          const isFav = await hasMovieAlreadySaved(STORAGE_KEY, id);
+          setIsFavorited(isFav);
           setMovie(data);
         }
       }
@@ -134,7 +145,7 @@ function MovieDetails() {
     return () => {
       isActive = false;
     };
-  }, [movie]);
+  }, [movie, isFavorited]);
 
   function handleGoBack() {
     navigation.goBack();
@@ -142,6 +153,37 @@ function MovieDetails() {
 
   function handleCloseModal() {
     setIsModalOpen(false);
+  }
+
+  async function toggleFavorited(newMovie: MovieProps) {
+    !isFavorited
+      ? addMovieToFavorite(newMovie)
+      : removeMovieFromFavorites(newMovie);
+  }
+
+  async function addMovieToFavorite(newMovie: MovieProps) {
+    const key = STORAGE_KEY;
+
+    const hasSaved = await saveMovie({ key, newMovie });
+
+    if (hasSaved) {
+      alert("Adicionado a sua lista de Favoritos!");
+      setIsFavorited(true);
+      return;
+    }
+
+    alert(
+      "Não conseguimos salvar o seu filme aos favoritos! Por Favor, tente Novamente"
+    );
+  }
+
+  async function removeMovieFromFavorites(movie: MovieProps) {
+    const key = STORAGE_KEY;
+
+    removeMovie(key, movie.id);
+    setIsFavorited(false);
+
+    alert("Filme Removido dos Favoritos!");
   }
 
   if (isLoading) {
@@ -160,8 +202,12 @@ function MovieDetails() {
           />
         </HeaderButton>
 
-        <HeaderButton>
-          <Ionicons name="bookmark" size={28} color="#FFF" />
+        <HeaderButton onPress={() => toggleFavorited(movie)}>
+          <Ionicons
+            name={isFavorited ? "bookmark" : "bookmark-outline"}
+            size={28}
+            color="#FFF"
+          />
         </HeaderButton>
       </Header>
 
