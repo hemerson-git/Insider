@@ -10,22 +10,22 @@ This Project has been developed on "React Insider Week 4", given by [Sujeito Pro
 
 #### 💻 Used Technologies&#58;
 
-[TypeScript]('https://www.typescriptlang.org/')
-[React Native]('https://reactnative.dev/')
-[Expo]('https://expo.dev/')
-[Styled-Components]('https://styled-components.com/')
+<a href="https://www.typescriptlang.org/">TypeScript</a> <br />
+<a href="https://reactnative.dev/">React Native</a> <br />
+<a href="https://expo.dev/">Expo</a> <br />
+<a href='https://styled-components.com/'>Styled-Components</a> <br />
 
 #### 🏃 How to Run&#58;
 
-- **First**
+- **First** <br />
   [Download]('https://github.com/hemerson-git/Insider/archive/refs/heads/master.zip') or Clone the Project
   <br />
 
-- **Second**
+- **Second** <br />
   Unzip it
   <br />
 
-- **Third**
+- **Third**  <br />
 
 ```bash
   # Go Inside the project folder
@@ -35,5 +35,5 @@ This Project has been developed on "React Insider Week 4", given by [Sujeito Pro
   expo start
 ```
 
-- **Finnaly**
+- **Finnaly** <br />
   Scan the QR Code with the expo app, and be happy 🙂
