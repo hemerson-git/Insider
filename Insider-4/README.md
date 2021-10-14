@@ -6,7 +6,7 @@ This Project has been developed on "React Insider Week 4", given by [Sujeito Pro
 
 #### App Preview&#58;
 
-<img src="">
+<img src="https://github.com/hemerson-git/Insider/blob/master/Insider-4/.github/main-gif.gif?raw=true" width="40%">
 
 #### 💻 Used Technologies&#58;
 
